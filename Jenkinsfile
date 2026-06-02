@@ -1,0 +1,20 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+
+                kubectl get pods
+                kubectl get svc
+                '''
+            }
+        }
+
+    }
+}
