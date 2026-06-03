@@ -1,20 +1,37 @@
 pipeline {
+agent any
 
-    agent any
+```
+stages {
 
-    stages {
-
-        stage('Deploy') {
-            steps {
-                sh '''
-                kubectl apply -f deployment.yaml
-                kubectl apply -f service.yaml
-
-                kubectl get pods
-                kubectl get svc
-                '''
-            }
+    stage('Pull Public Docker Image') {
+        steps {
+            sh '''
+            docker pull nginx:latest
+            docker images | grep nginx
+            '''
         }
+    }
 
+    stage('Deploy To Kubernetes') {
+        steps {
+            sh '''
+            kubectl apply -f deployment.yaml
+            kubectl apply -f service.yaml
+            '''
+        }
+    }
+
+    stage('Verify Deployment') {
+        steps {
+            sh '''
+            kubectl get pods -o wide
+            kubectl get svc
+            '''
+        }
     }
 }
+```
+
+}
+
