@@ -1,15 +1,12 @@
 pipeline {
 agent any
 
-```
+		
 stages {
 
-    stage('Pull Public Docker Image') {
+    stage('Pull Public Image') {
         steps {
-            sh '''
-            docker pull nginx:latest
-            docker images | grep nginx
-            '''
+            sh 'docker pull nginx:latest'
         }
     }
 
@@ -22,16 +19,16 @@ stages {
         }
     }
 
-    stage('Verify Deployment') {
+    stage('Verify') {
         steps {
             sh '''
-            kubectl get pods -o wide
+            kubectl get pods
             kubectl get svc
             '''
         }
     }
 }
-```
+
 
 }
 
