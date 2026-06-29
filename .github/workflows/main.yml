@@ -1,0 +1,29 @@
+name: Deploy to Kubernetes
+
+on:
+push:
+branches:
+- main
+
+jobs:
+deploy:
+runs-on: self-hosted
+
+```
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v4
+
+  - name: Pull Public Docker Image
+    run: docker pull nginx:latest
+
+  - name: Deploy to Kubernetes
+    run: |
+      kubectl apply -f deployment.yaml
+      kubectl apply -f service.yaml
+
+  - name: Verify Deployment
+    run: |
+      kubectl get pods
+      kubectl get svc
+```
